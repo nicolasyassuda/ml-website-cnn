@@ -4,10 +4,7 @@ import { FormEvent, useState } from "react";
 import { ClipLoader } from "react-spinners";
 
 export default function Home() {
-  const [fx, setFx] = useState<number>(0);
-  const [gx, setGx] = useState<number>(0);
-  const [fxLoading, setFxLoading] = useState<boolean>(false);
-  const [gxLoading, setGxLoading] = useState<boolean>(false);
+
 
   const [fx1, setFx1] = useState<number>(0);
   const [fx2, setFx2] = useState<number>(0);
@@ -19,7 +16,7 @@ export default function Home() {
   const [gx3, setGx3] = useState<number>(0);
   const [gxLoading2, setGxLoading2] = useState<boolean>(false);
 
-  const [marginLeft, setMarginLeft] = useState<number>(0)
+  const [marginLeft, setMarginLeft] = useState<number>(-256)
   function fxFunct(value: number) {
     if (!value) return 0;
     return value;
@@ -38,6 +35,69 @@ export default function Home() {
     if (marginLeft >= 256 && value == 1) return;
 
     setMarginLeft(marginLeft + value * 128)
+  }
+
+  function imagemSimples(alinhada:boolean = false){
+    let imagemMontada = [[0,1,0],[1,1,1],[0,1,0]];
+    return (
+    <div className="flex gap-4">
+      <div>
+        <p>Imagem</p>
+        <div className={`flex ${alinhada?'flex-row':'flex-col'}`}>{imagemMontada.map((value) => {
+          return <div className="flex">{
+          value.map((value) => {
+            if(value == 0) return(<span className=" border-2 border-black w-6 h-6 bg-white text-black text-center">1</span>)
+            if(value == 1) return(<span className=" border-2 border-black w-6 h-6 bg-cyan-800 text-center">.2</span>)
+            // return(<span className="w-1 h-1 bg-black"></span>)
+          })}
+          </div>
+        })}</div>
+      </div>
+      <div>
+        <p>Filtro</p>
+        <div className={`flex ${alinhada?'flex-row':'flex-col'}`}>{imagemMontada.map((value) => {
+          return <div className="flex">{
+          value.map((value) => {
+            if(value == 0) return(<span className=" border-2 border-black w-6 h-6 bg-white text-black text-center">1</span>)
+            return(<span className=" border-2 border-black w-6 h-6 bg-white text-black text-center">{(value/2).toString().substring(1,3)}</span>)
+          })}
+          </div>
+        })}</div>
+      </div>
+    </div>
+  )
+  }
+  function imagemDesenhada(n:number){
+    let marioImage = [
+      ['w','w','w','w','w','w','w','w','w','w','w','w','w'],
+      ['w','w','w','r','r','r','r','r','r','w','w','w','w'],
+      ['w','w','r','r','r','r','r','r','r','r','r','r','w'],
+      ['w','w','m','m','m','c','c','c','p','c','w','w','w'],
+      ['w','m','c','m','c','c','c','c','p','c','c','c','w'],
+      ['w','m','c','m','m','c','c','c','c','p','c','c','c'],
+      ['w','m','m','c','c','c','c','c','p','p','p','p','w'],
+      ['w','w','w','c','c','c','c','c','c','c','c','w','w'],
+      ['w','w','r','r','a','r','r','r','r','w','w','w','w'],
+      ['w','r','r','r','a','r','r','a','r','r','r','w','w']
+    ]
+      // 11:[0,0,0,0,0,0,0,0,0,0,0,0,0],
+      // 12:[0,0,0,0,0,0,0,0,0,0,0,0,0],
+      // 13:[0,0,0,0,0,0,0,0,0,0,0,0,0],
+      // 14:[0,0,0,0,0,0,0,0,0,0,0,0,0],
+      // 15:[0,0,0,0,0,0,0,0,0,0,0,0,0],
+      // 16:[0,0,0,0,0,0,0,0,0,0,0,0,0],
+      // 17:[0,0,0,0,0,0,0,0,0,0,0,0,0],
+      // 18:[0,0,0,0,0,0,0,0,0,0,0,0,0],
+      // 19:[0,0,0,0,0,0,0,0,0,0,0,0,0],    
+    return marioImage[n].map((value) => {
+      if(value == 'w') return(<span className=" border-2 border-black w-6 h-6 bg-white"></span>)
+      if(value == 'r') return(<span className=" border-2 border-black w-6 h-6 bg-red-500"></span>)
+      if(value == 'm') return(<span className=" border-2 border-black w-6 h-6 bg-amber-900"></span>)
+      if(value == 'c') return(<span className=" border-2 border-black w-6 h-6 bg-rose-300"></span>)
+      if(value == 'p') return(<span className=" border-2 border-black w-6 h-6 bg-black"></span>)
+      if(value == 'a') return(<span className=" border-2 border-black w-6 h-6 bg-blue-800"></span>)
+      return(<span className="w-1 h-1 bg-black"></span>)
+    })
   }
   return (
     <main className="flex min-h-screen flex-col justify-between p-24 pl-40 pr-40">
@@ -64,37 +124,7 @@ export default function Home() {
           <br />
           g(x)= x²
         </p>
-        <p className="indent-14">
-          Imagine que a que cada função é um bloquinho onde nós entramos com um valor e saímos com outro valor, por exemplo:
-        </p>
-
-        <div className="flex flex-row w-full justify-center items-center mb-6">
-          <input id="fx_input" type="number" placeholder="0" max={10} min={-10} className="h-6 w-16 text-black text-center" onChange={(e) => calculateFunctions(e.target.value, fxFunct, setFx, setFxLoading)}></input>
-          <p>{'=>'}</p>
-          <div className="flex items-center justify-center w-24 h-24 border-2">
-            {fxLoading ?
-              <ClipLoader color="#fff" loading={fxLoading} size={24} />
-              : <p>f(x)</p>}
-          </div>
-          <p>{'=>'}</p>
-          <div className="h-6 w-16 bg-white text-black text-center">
-            {fx}
-          </div>
-        </div>
-
-        <div className="flex flex-row w-full justify-center items-center">
-          <input id="fx_input" type="number" placeholder="0" max={10} min={-10} className="h-6 w-16 text-black text-center" onChange={(e) => calculateFunctions(e.target.value, gxFunct, setGx, setGxLoading)}></input>
-          <p>{'=>'}</p>
-          <div className="flex items-center justify-center w-24 h-24 border-2">
-            {gxLoading ?
-              <ClipLoader color="#fff" loading={gxLoading} size={24} />
-              : <p>g(x)</p>}
-          </div>
-          <p>{'=>'}</p>
-          <div className="h-6 min-w-16 w-fit bg-white text-black text-center">
-            {gx}
-          </div>
-        </div>
+        
 
         <p className="indent-14">E se a gente entrasse com um vetor nessa função? Por exemplo:</p>
         <div className="flex flex-row w-full justify-center items-center">
@@ -127,7 +157,7 @@ export default function Home() {
 
           <p>{'=>'}</p>
           <div className="flex items-center justify-center w-24 h-24 border-2">
-            {gxLoading ?
+            {gxLoading2 ?
               <ClipLoader color="#fff" loading={gxLoading2} size={24} />
               : <p>g(x)</p>}
           </div>
@@ -172,28 +202,48 @@ export default function Home() {
               {gx3}
             </div>
           </div>
-          <div className="flex">
-            <button className="min-h-fit" style={{ transform: "rotate(180deg)" }} onClick={() => handlerOnClick(-1)}>{'=>'}</button>
-            <button className=" min-h-fit" onClick={() => handlerOnClick(1)}>{'=>'}</button>
+          <div className="flex flex-row w-24 justify-between">
+            <span className="min-h-fit hover:cursor-pointer" style={{ transform: "rotate(180deg)" }} onClick={() => handlerOnClick(-1)}>{'=>'}</span>
+            <span className=" min-h-fit hover:cursor-pointer" onClick={() => handlerOnClick(1)}>{'=>'}</span>
           </div>
           <p>{'='}</p>
           <div className="flex flex-row text-black text-center">
             <div className="h-6 w-16 bg-white text-black text-center border-gray-400 border-r-2">
               {fx1*gx3}
             </div>
-            <div className="h-6 w-16 bg-white text-black text-center border-gray-400 border-r-2">
+            <div className={`h-6 w-16 bg-white text-black text-center border-gray-400 border-r-2 ${marginLeft<-128?'invisible':''}`}  >
               {fx1*gx2 + fx2*gx3}
             </div>
-            <div className="h-6 w-16 bg-white text-black text-center border-gray-400 border-r-2">
+            <div className={`h-6 w-16 bg-white text-black text-center border-gray-400 border-r-2 ${marginLeft<0?'invisible':''}`}>
               {fx1*gx1 + fx2*gx2 + fx3*gx3}
             </div>
-            <div className="h-6 w-16 bg-white text-black text-center border-gray-400 border-r-2">
+            <div className={`h-6 w-16 bg-white text-black text-center border-gray-400 border-r-2 ${marginLeft<128?'invisible':''}`}>
               {gx1*fx2+fx3*gx2}
             </div>
-            <div className="h-6 w-16 bg-white text-black text-center">
+            <div className={`h-6 w-16 bg-white text-black text-center border-gray-400 border-r-2 ${marginLeft<256?'invisible':''}`}>
               {fx3*gx1}
             </div>
           </div>
+        </div>
+      </section>
+      <section className="flex gap-4 flex-col mt-10">
+        <p className=" indent-14"> 
+          A partir disto podemos entender melhor como isso é feito em imagens, se você pensar que na verdade  uma imagem é um vetor de pixels, 
+          e que cada pixel é um valor de intensidade de cor, podemos aplicar a convolução de 2 vetores nessa imagem, onde um vetor é a imagem 
+          e o outro é o filtro, que é uma matriz de valores que irá multiplicar os valores da imagem, e assim obteremos uma nova imagem com 
+          as características que o filtro está procurando. 
+        </p>
+        <div className="flex w-full justify-center">
+              {imagemSimples()} 
+        </div>
+        <p className=" indent-14">
+            Transformando para 2d para melhor compreenção, podemos ver que a imagem é uma matriz de valores, e o filtro também é uma matriz de valores,
+        </p>
+        <div className="flex w-full justify-center">
+          {imagemSimples(true)} 
+        </div>
+        <div className="flex">
+          {imagemDesenhada(8)}
         </div>
       </section>
     </main>
