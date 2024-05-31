@@ -17,6 +17,10 @@ export default function Home() {
   const [gxLoading2, setGxLoading2] = useState<boolean>(false);
 
   const [marginLeft, setMarginLeft] = useState<number>(-256)
+  const [marginLeftMario, setMarginLeftMario] = useState<number>(0)
+  const [marginTopMario, setMarginTopMario] = useState<number>(0)
+
+
   function fxFunct(value: number) {
     if (!value) return 0;
     return value;
@@ -37,6 +41,22 @@ export default function Home() {
     setMarginLeft(marginLeft + value * 128)
   }
 
+  function handlerOnClickSlideMario(value: number){
+    if (marginLeftMario <= 0 && value == -1 && marginTopMario > 0){
+      setMarginLeftMario(0)
+      setMarginTopMario(marginTopMario + value * 32)
+      return;
+    }
+    else if (marginLeftMario >= 352 && value == 1 && marginTopMario < 2000) {
+      setMarginLeftMario(0)
+      setMarginTopMario(marginTopMario + value * 32)
+      return;
+    }else{
+      return;
+    }
+
+    setMarginLeftMario(marginLeftMario + value * 32)
+  }
   function imagemSimples(alinhada:boolean = false){
     let imagemMontada = [[0,1,0],[1,1,1],[0,1,0]];
     return (
@@ -67,37 +87,74 @@ export default function Home() {
     </div>
   )
   }
-  function imagemDesenhada(n:number){
+  function imagemDesenhada(n:number = 0,full:boolean = true, cinza:boolean = true){
     let marioImage = [
-      ['w','w','w','w','w','w','w','w','w','w','w','w','w'],
-      ['w','w','w','r','r','r','r','r','r','w','w','w','w'],
-      ['w','w','r','r','r','r','r','r','r','r','r','r','w'],
-      ['w','w','m','m','m','c','c','c','p','c','w','w','w'],
-      ['w','m','c','m','c','c','c','c','p','c','c','c','w'],
-      ['w','m','c','m','m','c','c','c','c','p','c','c','c'],
-      ['w','m','m','c','c','c','c','c','p','p','p','p','w'],
-      ['w','w','w','c','c','c','c','c','c','c','c','w','w'],
-      ['w','w','r','r','a','r','r','r','r','w','w','w','w'],
-      ['w','r','r','r','a','r','r','a','r','r','r','w','w']
+      ['w','w','w','w','w','w','w','w','w','w','w','w','w','w'],
+      ['w','w','w','w','r','r','r','r','r','r','w','w','w','w'],
+      ['w','w','w','r','r','r','r','r','r','r','r','r','r','w'],
+      ['w','w','w','m','m','m','c','c','c','p','c','w','w','w'],
+      ['w','w','m','c','m','c','c','c','c','p','c','c','c','w'],
+      ['w','w','m','c','m','m','c','c','c','c','p','c','c','c'],
+      ['w','w','m','m','c','c','c','c','c','p','p','p','p','w'],
+      ['w','w','w','w','c','c','c','c','c','c','c','c','w','w'],
+      ['w','w','w','r','r','a','r','r','r','r','w','w','w','w'],
+      ['w','w','r','r','r','a','r','r','a','r','r','r','w','w'],
+      ['w','r','r','r','r','a','a','a','a','r','r','r','r','w'],
+      ['w','c','c','r','a','am','a','a','am','a','r','c','c','w'],
+      ['w','c','c','c','a','a','a','a','a','a','c','c','c','w'],
+      ['w','c','c','a','a','a','a','a','a','a','a','c','c','w'],
+      ['w','w','w','a','a','a','w','w','a','a','a','w','w','w'],
+      ['w','w','m','m','m','w','w','w','w','m','m','m','w','w'],
+      ['w','m','m','m','m','w','w','w','w','m','m','m','m','w'],
+      ['w','w','w','w','w','w','w','w','w','w','w','w','w','w'],
     ]
-      // 11:[0,0,0,0,0,0,0,0,0,0,0,0,0],
-      // 12:[0,0,0,0,0,0,0,0,0,0,0,0,0],
-      // 13:[0,0,0,0,0,0,0,0,0,0,0,0,0],
-      // 14:[0,0,0,0,0,0,0,0,0,0,0,0,0],
-      // 15:[0,0,0,0,0,0,0,0,0,0,0,0,0],
-      // 16:[0,0,0,0,0,0,0,0,0,0,0,0,0],
-      // 17:[0,0,0,0,0,0,0,0,0,0,0,0,0],
-      // 18:[0,0,0,0,0,0,0,0,0,0,0,0,0],
-      // 19:[0,0,0,0,0,0,0,0,0,0,0,0,0],    
-    return marioImage[n].map((value) => {
-      if(value == 'w') return(<span className=" border-2 border-black w-6 h-6 bg-white"></span>)
-      if(value == 'r') return(<span className=" border-2 border-black w-6 h-6 bg-red-500"></span>)
-      if(value == 'm') return(<span className=" border-2 border-black w-6 h-6 bg-amber-900"></span>)
-      if(value == 'c') return(<span className=" border-2 border-black w-6 h-6 bg-rose-300"></span>)
-      if(value == 'p') return(<span className=" border-2 border-black w-6 h-6 bg-black"></span>)
-      if(value == 'a') return(<span className=" border-2 border-black w-6 h-6 bg-blue-800"></span>)
-      return(<span className="w-1 h-1 bg-black"></span>)
-    })
+    if(full){
+      if(cinza){
+        return marioImage.map((value) => {
+          return <div className="flex flex-row">{
+            value.map((value) => {
+              if(value == 'w') return(<span className=" border-2 text-center border-black w-8 h-8 bg-white text-black">255</span>)
+              if(value == 'r') return(<span className=" border-2 text-center border-black w-8 h-8" style={{backgroundColor:"rgb(54,54,54)"}}>54</span>)
+              if(value == 'm') return(<span className=" border-2 text-center border-black w-8 h-8 bg-amber-900" style={{backgroundColor:"rgb(84,84,84)"}}>84</span>)
+              if(value == 'c') return(<span className=" border-2 text-center border-black w-8 h-8 bg-orange-200" style={{backgroundColor:"rgb(201,201,201)"}}>201</span>)
+              if(value == 'p') return(<span className=" border-2 text-center border-black w-8 h-8 bg-black" style={{backgroundColor:"rgb(0,0,0)"}}>0</span>)
+              if(value == 'a') return(<span className=" border-2 text-center border-black w-8 h-8 bg-blue-800" style={{backgroundColor:"rgb(95,95,95)"}}>95</span>)
+              if(value == 'am') return(<span className=" border-2 text-center border-black w-8 h-8 bg-yellow-300" style={{backgroundColor:"rgb(236,236,236)"}}>236</span>)
+              return(<span className="w-1 h-1 bg-black"></span>)
+            })}
+          </div>
+        })
+      }
+      else{
+        return marioImage.map((value) => {
+          return <div className="flex flex-row">{
+            value.map((value) => {
+              if(value == 'w') return(<span className=" border-2 border-black w-6 h-6 bg-white"></span>)
+              if(value == 'r') return(<span className=" border-2 border-black w-6 h-6" style={{backgroundColor:"rgb(255,0,0)"}}></span>)
+              if(value == 'm') return(<span className=" border-2 border-black w-6 h-6 bg-amber-900" style={{backgroundColor:"rgb(150,75,0)"}}></span>)
+              if(value == 'c') return(<span className=" border-2 border-black w-6 h-6 bg-orange-200" style={{backgroundColor:"rgb(255,200,180)"}}></span>)
+              if(value == 'p') return(<span className=" border-2 border-black w-6 h-6 bg-black" style={{backgroundColor:"rgb(0,0,0)"}}></span>)
+              if(value == 'a') return(<span className=" border-2 border-black w-6 h-6 bg-blue-800" style={{backgroundColor:"rgb(0,0,255)"}}></span>)
+              if(value == 'am') return(<span className=" border-2 border-black w-6 h-6 bg-yellow-300" style={{backgroundColor:"rgb(255,255,0)"}}></span>)
+              return(<span className="w-1 h-1 bg-black"></span>)
+            })}
+          </div>
+        })
+      }
+
+      
+    }
+    else{
+      return marioImage[n].map((value) => {
+        if(value == 'w') return(<span className=" border-2 border-black w-6 h-6 bg-white"></span>)
+        if(value == 'r') return(<span className=" border-2 border-black w-6 h-6 bg-red-500"></span>)
+        if(value == 'm') return(<span className=" border-2 border-black w-6 h-6 bg-amber-900"></span>)
+        if(value == 'c') return(<span className=" border-2 border-black w-6 h-6 bg-rose-300"></span>)
+        if(value == 'p') return(<span className=" border-2 border-black w-6 h-6 bg-black"></span>)
+        if(value == 'a') return(<span className=" border-2 border-black w-6 h-6 bg-blue-800"></span>)
+        return(<span className="w-1 h-1 bg-black"></span>)
+      })
+    }
   }
   return (
     <main className="flex min-h-screen flex-col justify-between p-24 pl-40 pr-40">
@@ -242,8 +299,44 @@ export default function Home() {
         <div className="flex w-full justify-center">
           {imagemSimples(true)} 
         </div>
-        <div className="flex">
-          {imagemDesenhada(8)}
+        <div className="flex flex-col w-full justify-center items-center">
+          <p>
+            E se a gente aplicasse a convolução de um filtro em uma imagem?
+          </p>
+          {imagemDesenhada(1,true,false)}
+        </div>
+        <div className="flex flex-col w-full justify-center items-center">
+          <p>
+            Para simplificar a explicação deixaremos ela em tons de cinza e atribuirmos um numero ao tom.
+          </p>
+          <div className="flex flex-col w-full justify-center items-center ">
+
+            <span className="relative">
+              {imagemDesenhada(1,true,true)}
+              <div className="flex flex-col absolute" style={{left:marginLeftMario,top:marginTopMario}}>
+                <div className="flex flex-row">
+                  <span className="w-8 h-8 bg-white border-2 border-black text-black text-center">0</span>
+                  <span className="w-8 h-8 bg-white border-2 border-black text-black text-center">1</span>
+                  <span className="w-8 h-8 bg-white border-2 border-black text-black text-center">0</span>
+                </div>
+                <div className="flex flex-row">
+                  <span className="w-8 h-8 bg-white border-2 border-black text-black text-center">1</span>
+                  <span className="w-8 h-8 bg-white border-2 border-black text-black text-center">0</span>
+                  <span className="w-8 h-8 bg-white border-2 border-black text-black text-center">1</span>
+                </div>
+                <div className="flex flex-row">
+                  <span className="w-8 h-8 bg-white border-2 border-black text-black text-center">0</span>
+                  <span className="w-8 h-8 bg-white border-2 border-black text-black text-center">1</span>
+                  <span className="w-8 h-8 bg-white border-2 border-black text-black text-center">0</span>
+                </div>
+              </div>
+            </span>
+            <div className="flex flex-row w-24 justify-between">
+            <span className="min-h-fit hover:cursor-pointer" style={{ transform: "rotate(180deg)" }} onClick={() => handlerOnClickSlideMario(-1)}>{'=>'}</span>
+            <span className=" min-h-fit hover:cursor-pointer" onClick={() => handlerOnClickSlideMario(1)}>{'=>'}</span>
+          </div>
+          </div>
+
         </div>
       </section>
     </main>
