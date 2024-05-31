@@ -1,8 +1,9 @@
 'use client'
 import Image from "next/image";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
-
+import { MathComponent } from 'mathjax-react';
+import Link from "next/link";
 export default function Home() {
 
 
@@ -20,6 +21,29 @@ export default function Home() {
   const [marginLeftMario, setMarginLeftMario] = useState<number>(0)
   const [marginTopMario, setMarginTopMario] = useState<number>(0)
 
+  const [newImageMarioConvolution,setNewImageMarioConvolution] = useState<Array<number[]>>([[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]])
+  const [indexImageMarioConvolution,setIndexImageMarioConvolution] = useState<number>(0)
+  let marioImage : Array<string[]> = [
+    ['w','w','w','w','w','w','w','w','w','w','w','w','w','w'],
+    ['w','w','w','w','r','r','r','r','r','r','w','w','w','w'],
+    ['w','w','w','r','r','r','r','r','r','r','r','r','r','w'],
+    ['w','w','w','m','m','m','c','c','c','p','c','w','w','w'],
+    ['w','w','m','c','m','c','c','c','c','p','c','c','c','w'],
+    ['w','w','m','c','m','m','c','c','c','c','p','c','c','c'],
+    ['w','w','m','m','c','c','c','c','c','p','p','p','p','w'],
+    ['w','w','w','w','c','c','c','c','c','c','c','c','w','w'],
+    ['w','w','w','r','r','a','r','r','r','r','w','w','w','w'],
+    ['w','w','r','r','r','a','r','r','a','r','r','r','w','w'],
+    ['w','r','r','r','r','a','a','a','a','r','r','r','r','w'],
+    ['w','c','c','r','a','am','a','a','am','a','r','c','c','w'],
+    ['w','c','c','c','a','a','a','a','a','a','c','c','c','w'],
+    ['w','c','c','a','a','a','a','a','a','a','a','c','c','w'],
+    ['w','w','w','a','a','a','w','w','a','a','a','w','w','w'],
+    ['w','w','m','m','m','w','w','w','w','m','m','m','w','w'],
+    ['w','m','m','m','m','w','w','w','w','m','m','m','m','w'],
+    ['w','w','w','w','w','w','w','w','w','w','w','w','w','w'],
+  ]
+
 
   function fxFunct(value: number) {
     if (!value) return 0;
@@ -29,6 +53,7 @@ export default function Home() {
     if (!value) return 0;
     return value * value;
   }
+  
   function calculateFunctions(value: string, funct: (value: number) => number, set: (value: number) => void, setLoading: (value: boolean) => void) {
     setLoading(true)
     setTimeout(() => (setLoading(false), set(funct(parseFloat(value)))), 1000)
@@ -41,21 +66,43 @@ export default function Home() {
     setMarginLeft(marginLeft + value * 128)
   }
 
-  function handlerOnClickSlideMario(value: number){
-    if (marginLeftMario <= 0 && value == -1 && marginTopMario > 0){
-      setMarginLeftMario(0)
-      setMarginTopMario(marginTopMario + value * 32)
+  function handlerOnClickSlideMario(avanco: number){
+    let newImageMarioAuxiliar = [...newImageMarioConvolution]
+
+    if((marginTopMario == 0 && avanco == -1 && marginLeftMario == 0) || (marginTopMario == 480 && avanco == 1 && marginLeftMario == 352)) {
+      console.log('entrou')
+      return
+    };
+
+    let resultConvolution = calculateConvolutionImageDesenhada(marginLeftMario/32,marginTopMario/32)
+    if(avanco==1){
+      newImageMarioAuxiliar[indexImageMarioConvolution].push(resultConvolution)
+      setNewImageMarioConvolution(newImageMarioAuxiliar)
+    }else{
+      console.log('entrou2')
+
+      newImageMarioAuxiliar[indexImageMarioConvolution].pop()
+      setNewImageMarioConvolution(newImageMarioAuxiliar)
+
+    }
+
+    if (marginLeftMario <= 0 && avanco == -1){
+      setMarginLeftMario(352)
+      setMarginTopMario(marginTopMario + avanco * 32)
+      setIndexImageMarioConvolution(indexImageMarioConvolution - 1)
       return;
     }
-    else if (marginLeftMario >= 352 && value == 1 && marginTopMario < 2000) {
+    else if (marginLeftMario >= 352 && avanco == 1) {
       setMarginLeftMario(0)
-      setMarginTopMario(marginTopMario + value * 32)
+      setMarginTopMario(marginTopMario + avanco * 32)
+      setIndexImageMarioConvolution(indexImageMarioConvolution + 1)
       return;
     }else{
+      setMarginLeftMario(marginLeftMario + avanco * 32)
       return;
     }
 
-    setMarginLeftMario(marginLeftMario + value * 32)
+
   }
   function imagemSimples(alinhada:boolean = false){
     let imagemMontada = [[0,1,0],[1,1,1],[0,1,0]];
@@ -88,26 +135,6 @@ export default function Home() {
   )
   }
   function imagemDesenhada(n:number = 0,full:boolean = true, cinza:boolean = true){
-    let marioImage = [
-      ['w','w','w','w','w','w','w','w','w','w','w','w','w','w'],
-      ['w','w','w','w','r','r','r','r','r','r','w','w','w','w'],
-      ['w','w','w','r','r','r','r','r','r','r','r','r','r','w'],
-      ['w','w','w','m','m','m','c','c','c','p','c','w','w','w'],
-      ['w','w','m','c','m','c','c','c','c','p','c','c','c','w'],
-      ['w','w','m','c','m','m','c','c','c','c','p','c','c','c'],
-      ['w','w','m','m','c','c','c','c','c','p','p','p','p','w'],
-      ['w','w','w','w','c','c','c','c','c','c','c','c','w','w'],
-      ['w','w','w','r','r','a','r','r','r','r','w','w','w','w'],
-      ['w','w','r','r','r','a','r','r','a','r','r','r','w','w'],
-      ['w','r','r','r','r','a','a','a','a','r','r','r','r','w'],
-      ['w','c','c','r','a','am','a','a','am','a','r','c','c','w'],
-      ['w','c','c','c','a','a','a','a','a','a','c','c','c','w'],
-      ['w','c','c','a','a','a','a','a','a','a','a','c','c','w'],
-      ['w','w','w','a','a','a','w','w','a','a','a','w','w','w'],
-      ['w','w','m','m','m','w','w','w','w','m','m','m','w','w'],
-      ['w','m','m','m','m','w','w','w','w','m','m','m','m','w'],
-      ['w','w','w','w','w','w','w','w','w','w','w','w','w','w'],
-    ]
     if(full){
       if(cinza){
         return marioImage.map((value) => {
@@ -156,6 +183,52 @@ export default function Home() {
       })
     }
   }
+  function renderMarioConvolution(){
+    return <div className="flex flex-col ml-8">{newImageMarioConvolution.map((value) => {
+      return <div className="flex flex-row">{
+        value.map((value) => {
+          return(<span className=" border-2 border-black w-8 h-8 text-center text-black" style={{backgroundColor:`rgb(${value},${value},${value})`}}>{value.toFixed()}</span>)
+        })}
+      </div>})
+      }</div>
+  }
+  function colorConversor(value:string):number{
+    let valuePixel = 0;
+    switch(value){
+      case 'w':
+        valuePixel = 255;
+        break;
+      case 'r':
+        valuePixel = 54;
+        break;
+      case 'm':
+        valuePixel = 84;
+        break;
+      case 'c':
+        valuePixel = 201;
+        break;
+      case 'p':
+        valuePixel = 0;
+        break;
+      case 'a':
+        valuePixel = 95;
+        break;
+      case 'am':
+        valuePixel = 236;
+        break;
+    }
+    return valuePixel;
+  }
+  function calculateConvolutionImageDesenhada(x:number,y:number){
+    
+    let GaussianKernel: number = 1/9;
+    let result: number = colorConversor(marioImage[y][x])*GaussianKernel + colorConversor(marioImage[y][x+1])*GaussianKernel + colorConversor(marioImage[y][x+2])*GaussianKernel 
+                        + colorConversor(marioImage[y+1][x])*GaussianKernel + colorConversor(marioImage[y+1][x+1])*GaussianKernel + colorConversor(marioImage[y+1][x+2])*GaussianKernel + 
+                          colorConversor(marioImage[y+2][x])*GaussianKernel + colorConversor(marioImage[y+2][x+1])*GaussianKernel + colorConversor(marioImage[y+2][x+2])*GaussianKernel;
+    return result;
+  }
+
+
   return (
     <main className="flex min-h-screen flex-col justify-between p-24 pl-40 pr-40">
       <section>
@@ -309,34 +382,55 @@ export default function Home() {
           <p>
             Para simplificar a explicação deixaremos ela em tons de cinza e atribuirmos um numero ao tom.
           </p>
-          <div className="flex flex-col w-full justify-center items-center ">
-
-            <span className="relative">
+          <div className="flex flex-row w-1/2 justify-between items-center ">
+              
+            <span className="flex flex-col relative justify-center items-center">
               {imagemDesenhada(1,true,true)}
               <div className="flex flex-col absolute" style={{left:marginLeftMario,top:marginTopMario}}>
                 <div className="flex flex-row">
-                  <span className="w-8 h-8 bg-white border-2 border-black text-black text-center">0</span>
-                  <span className="w-8 h-8 bg-white border-2 border-black text-black text-center">1</span>
-                  <span className="w-8 h-8 bg-white border-2 border-black text-black text-center">0</span>
+                  <span className="w-8 h-8 bg-white border-2 border-black text-black text-center opacity-75">1/9</span>
+                  <span className="w-8 h-8 bg-white border-2 border-black text-black text-center opacity-75">1/9</span>
+                  <span className="w-8 h-8 bg-white border-2 border-black text-black text-center opacity-75">1/9</span>
                 </div>
                 <div className="flex flex-row">
-                  <span className="w-8 h-8 bg-white border-2 border-black text-black text-center">1</span>
-                  <span className="w-8 h-8 bg-white border-2 border-black text-black text-center">0</span>
-                  <span className="w-8 h-8 bg-white border-2 border-black text-black text-center">1</span>
+                  <span className="w-8 h-8 bg-white border-2 border-black text-black text-center opacity-75">1/9</span>
+                  <span className="w-8 h-8 bg-white border-2 border-black text-black text-center opacity-75">1/9</span>
+                  <span className="w-8 h-8 bg-white border-2 border-black text-black text-center opacity-75">1/9</span>
                 </div>
                 <div className="flex flex-row">
-                  <span className="w-8 h-8 bg-white border-2 border-black text-black text-center">0</span>
-                  <span className="w-8 h-8 bg-white border-2 border-black text-black text-center">1</span>
-                  <span className="w-8 h-8 bg-white border-2 border-black text-black text-center">0</span>
+                  <span className="w-8 h-8 bg-white border-2 border-black text-black text-center opacity-75">1/9</span>
+                  <span className="w-8 h-8 bg-white border-2 border-black text-black text-center opacity-75">1/9</span>
+                  <span className="w-8 h-8 bg-white border-2 border-black text-black text-center opacity-75">1/9</span>
                 </div>
               </div>
+              <div className="flex flex-row w-24 justify-between">
+                <span className="min-h-fit hover:cursor-pointer" style={{ transform: "rotate(180deg)" }} onClick={() => handlerOnClickSlideMario(-1)}>{'=>'}</span>
+                <span className=" min-h-fit hover:cursor-pointer" onClick={() => handlerOnClickSlideMario(1)}>{'=>'}</span>
+              </div>
             </span>
-            <div className="flex flex-row w-24 justify-between">
-            <span className="min-h-fit hover:cursor-pointer" style={{ transform: "rotate(180deg)" }} onClick={() => handlerOnClickSlideMario(-1)}>{'=>'}</span>
-            <span className=" min-h-fit hover:cursor-pointer" onClick={() => handlerOnClickSlideMario(1)}>{'=>'}</span>
+            {renderMarioConvolution()}
           </div>
+          <div>
+            <p>
+              Parabéns! Você acabou de aplicar uma convolução em uma imagem, mais especificamente, filtro Gaussiano que borra a imagem.
+            </p>
           </div>
+          <div className="flex">
+            <MathComponent tex={'Conv[x,y] = \\sum_{x=0}^{2} \\sum_{y=0}^{2}\\text{vet}[x,y] \\cdot \\text{filt}[x,y]'} />
+          </div>
+        </div>
+        <div className="flex flex-col w-full justify-center items-center">
+            <p className="indent-14">
+              Veremos alguns exemplos muito importantes de filtros que são utilizados em CNNs, como o filtro de Sobel, que é utilizado para detectar bordas em imagens,
+              filtro Laplacinano, que é utilizado para detectar pontos de mudança de intensidade de cor, e o filtro de suavização e remoção de ruidos e os detalhes finos, 
+              que é utilizado para podermos generalizar melhor uma imagem sem se atentar demais a detalhes (dependendo do peso colocado em x). Para isso clique nos botões a seguir:
+            </p>
+            <div className="flex flex-row w-3/4 justify-around mt-8">
+              <Link href="/sobel" className=" bg-cyan-800 p-4 rounded-md"> Filtro de Sobel </Link>
+              <Link href="/laplaciano" className=" bg-cyan-800 p-4 rounded-md"> Filtro Laplaciano</Link>
+              <Link href="/suavizacao" className=" bg-cyan-800 p-4 rounded-md"> Filtro de Suavização</Link>
 
+            </div>
         </div>
       </section>
     </main>
