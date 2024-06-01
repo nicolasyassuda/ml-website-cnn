@@ -2,8 +2,11 @@
 import Image from "next/image";
 import { FormEvent, useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
-import { MathComponent } from 'mathjax-react';
+
 import Link from "next/link";
+import dynamic from "next/dynamic";
+const MathJaxComponent = dynamic(() => import('@/app/components/MathJaxComponent'), { ssr: false });
+
 export default function Home() {
 
 
@@ -111,10 +114,10 @@ export default function Home() {
       <div>
         <p>Imagem</p>
         <div className={`flex ${alinhada?'flex-row':'flex-col'}`}>{imagemMontada.map((value) => {
-          return <div className="flex">{
+          return <div key={Math.random()} className="flex">{
           value.map((value) => {
-            if(value == 0) return(<span className=" border-2 border-black w-6 h-6 bg-white text-black text-center">1</span>)
-            if(value == 1) return(<span className=" border-2 border-black w-6 h-6 bg-cyan-800 text-center">.2</span>)
+            if(value == 0) return(<span key={Math.random()} className=" border-2 border-black w-6 h-6 bg-white text-black text-center">1</span>)
+            if(value == 1) return(<span key={Math.random()} className=" border-2 border-black w-6 h-6 bg-cyan-800 text-center">.2</span>)
             // return(<span className="w-1 h-1 bg-black"></span>)
           })}
           </div>
@@ -123,10 +126,10 @@ export default function Home() {
       <div>
         <p>Filtro</p>
         <div className={`flex ${alinhada?'flex-row':'flex-col'}`}>{imagemMontada.map((value) => {
-          return <div className="flex">{
+          return <div key={Math.random()} className="flex">{
           value.map((value) => {
-            if(value == 0) return(<span className=" border-2 border-black w-6 h-6 bg-white text-black text-center">1</span>)
-            return(<span className=" border-2 border-black w-6 h-6 bg-white text-black text-center">{(value/2).toString().substring(1,3)}</span>)
+            if(value == 0) return(<span key={Math.random()} className=" border-2 border-black w-6 h-6 bg-white text-black text-center">1</span>)
+            return(<span key={Math.random()} className=" border-2 border-black w-6 h-6 bg-white text-black text-center">{(value/2).toString().substring(1,3)}</span>)
           })}
           </div>
         })}</div>
@@ -134,60 +137,62 @@ export default function Home() {
     </div>
   )
   }
-  function imagemDesenhada(n:number = 0,full:boolean = true, cinza:boolean = true){
-    if(full){
-      if(cinza){
-        return marioImage.map((value) => {
-          return <div className="flex flex-row">{
-            value.map((value) => {
-              if(value == 'w') return(<span className=" border-2 text-center border-black w-8 h-8 bg-white text-black">255</span>)
-              if(value == 'r') return(<span className=" border-2 text-center border-black w-8 h-8" style={{backgroundColor:"rgb(54,54,54)"}}>54</span>)
-              if(value == 'm') return(<span className=" border-2 text-center border-black w-8 h-8 bg-amber-900" style={{backgroundColor:"rgb(84,84,84)"}}>84</span>)
-              if(value == 'c') return(<span className=" border-2 text-center border-black w-8 h-8 bg-orange-200" style={{backgroundColor:"rgb(201,201,201)"}}>201</span>)
-              if(value == 'p') return(<span className=" border-2 text-center border-black w-8 h-8 bg-black" style={{backgroundColor:"rgb(0,0,0)"}}>0</span>)
-              if(value == 'a') return(<span className=" border-2 text-center border-black w-8 h-8 bg-blue-800" style={{backgroundColor:"rgb(95,95,95)"}}>95</span>)
-              if(value == 'am') return(<span className=" border-2 text-center border-black w-8 h-8 bg-yellow-300" style={{backgroundColor:"rgb(236,236,236)"}}>236</span>)
-              return(<span className="w-1 h-1 bg-black"></span>)
-            })}
-          </div>
-        })
-      }
-      else{
-        return marioImage.map((value) => {
-          return <div className="flex flex-row">{
-            value.map((value) => {
-              if(value == 'w') return(<span className=" border-2 border-black w-6 h-6 bg-white"></span>)
-              if(value == 'r') return(<span className=" border-2 border-black w-6 h-6" style={{backgroundColor:"rgb(255,0,0)"}}></span>)
-              if(value == 'm') return(<span className=" border-2 border-black w-6 h-6 bg-amber-900" style={{backgroundColor:"rgb(150,75,0)"}}></span>)
-              if(value == 'c') return(<span className=" border-2 border-black w-6 h-6 bg-orange-200" style={{backgroundColor:"rgb(255,200,180)"}}></span>)
-              if(value == 'p') return(<span className=" border-2 border-black w-6 h-6 bg-black" style={{backgroundColor:"rgb(0,0,0)"}}></span>)
-              if(value == 'a') return(<span className=" border-2 border-black w-6 h-6 bg-blue-800" style={{backgroundColor:"rgb(0,0,255)"}}></span>)
-              if(value == 'am') return(<span className=" border-2 border-black w-6 h-6 bg-yellow-300" style={{backgroundColor:"rgb(255,255,0)"}}></span>)
-              return(<span className="w-1 h-1 bg-black"></span>)
-            })}
-          </div>
-        })
-      }
-
-      
-    }
-    else{
-      return marioImage[n].map((value) => {
-        if(value == 'w') return(<span className=" border-2 border-black w-6 h-6 bg-white"></span>)
-        if(value == 'r') return(<span className=" border-2 border-black w-6 h-6 bg-red-500"></span>)
-        if(value == 'm') return(<span className=" border-2 border-black w-6 h-6 bg-amber-900"></span>)
-        if(value == 'c') return(<span className=" border-2 border-black w-6 h-6 bg-rose-300"></span>)
-        if(value == 'p') return(<span className=" border-2 border-black w-6 h-6 bg-black"></span>)
-        if(value == 'a') return(<span className=" border-2 border-black w-6 h-6 bg-blue-800"></span>)
-        return(<span className="w-1 h-1 bg-black"></span>)
+  function imagemDesenhada(cinza:boolean = true,mario:boolean = false){
+    if(cinza){
+      return marioImage.map((value) => {
+        return <div key={Math.random()} className="flex flex-row">{
+          value.map((value) => {
+            if(value == 'w') return(<span key={Math.random()} className=" border-2 text-center border-black w-8 h-8 bg-white text-black">255</span>)
+            if(value == 'r') return(<span key={Math.random()} className=" border-2 text-center border-black w-8 h-8" style={{backgroundColor:"rgb(54,54,54)"}}>54</span>)
+            if(value == 'm') return(<span key={Math.random()} className=" border-2 text-center border-black w-8 h-8 bg-amber-900" style={{backgroundColor:"rgb(84,84,84)"}}>84</span>)
+            if(value == 'c') return(<span key={Math.random()} className=" border-2 text-center border-black w-8 h-8 bg-orange-200" style={{backgroundColor:"rgb(201,201,201)"}}>201</span>)
+            if(value == 'p') return(<span key={Math.random()} className=" border-2 text-center border-black w-8 h-8 bg-black" style={{backgroundColor:"rgb(0,0,0)"}}>0</span>)
+            if(value == 'a') return(<span key={Math.random()} className=" border-2 text-center border-black w-8 h-8 bg-blue-800" style={{backgroundColor:"rgb(95,95,95)"}}>95</span>)
+            if(value == 'am') return(<span key={Math.random()} className=" border-2 text-center border-black w-8 h-8 bg-yellow-300" style={{backgroundColor:"rgb(236,236,236)"}}>236</span>)
+            return(<span key={Math.random()} className="w-1 h-1 bg-black"></span>)
+          })}
+        </div>
       })
     }
+    else{
+      if(mario)
+      return marioImage.map((value) => {
+        return <div key={Math.random()} className="flex flex-row">{
+          value.map((value) => {
+            if(value == 'w') return(<span key={Math.random()} className=" border-2 border-black w-6 h-6 bg-white"></span>)
+            if(value == 'r') return(<span key={Math.random()} className=" border-2 border-black w-6 h-6" style={{backgroundColor:"rgb(255,0,0)"}}></span>)
+            if(value == 'm') return(<span key={Math.random()} className=" border-2 border-black w-6 h-6 bg-amber-900" style={{backgroundColor:"rgb(150,75,0)"}}></span>)
+            if(value == 'c') return(<span key={Math.random()} className=" border-2 border-black w-6 h-6 bg-orange-200" style={{backgroundColor:"rgb(255,200,180)"}}></span>)
+            if(value == 'p') return(<span key={Math.random()} className=" border-2 border-black w-6 h-6 bg-black" style={{backgroundColor:"rgb(0,0,0)"}}></span>)
+            if(value == 'a') return(<span key={Math.random()} className=" border-2 border-black w-6 h-6 bg-blue-800" style={{backgroundColor:"rgb(0,0,255)"}}></span>)
+            if(value == 'am') return(<span key={Math.random()} className=" border-2 border-black w-6 h-6 bg-yellow-300" style={{backgroundColor:"rgb(255,255,0)"}}></span>)
+            return(<span key={Math.random()} className="w-1 h-1 bg-black"></span>)
+          })}
+        </div>
+      })
+      else
+      return marioImage.map((value) => {
+        return <div key={Math.random()} className="flex flex-row">{
+          value.map((value) => {
+            if(value == 'w') return(<span key={Math.random()} className=" border-2 border-black w-6 h-6 bg-white"></span>)
+            if(value == 'r') return(<span key={Math.random()} className=" border-2 border-black w-6 h-6" style={{backgroundColor:"rgb(0,255,0)"}}></span>)
+            if(value == 'm') return(<span key={Math.random()} className=" border-2 border-black w-6 h-6 bg-amber-900" style={{backgroundColor:"rgb(150,75,0)"}}></span>)
+            if(value == 'c') return(<span key={Math.random()} className=" border-2 border-black w-6 h-6 bg-orange-200" style={{backgroundColor:"rgb(255,200,180)"}}></span>)
+            if(value == 'p') return(<span key={Math.random()} className=" border-2 border-black w-6 h-6 bg-black" style={{backgroundColor:"rgb(0,0,0)"}}></span>)
+            if(value == 'a') return(<span key={Math.random()} className=" border-2 border-black w-6 h-6 bg-blue-800" style={{backgroundColor:"rgb(0,0,255)"}}></span>)
+            if(value == 'am') return(<span key={Math.random()} className=" border-2 border-black w-6 h-6 bg-yellow-300" style={{backgroundColor:"rgb(255,255,0)"}}></span>)
+            return(<span key={Math.random()} className="w-1 h-1 bg-black"></span>)
+          })}
+        </div>
+      })
+    }
+  
   }
   function renderMarioConvolution(){
     return <div className="flex flex-col ml-8">{newImageMarioConvolution.map((value) => {
-      return <div className="flex flex-row">{
+      return <div key={Math.random()} className="flex flex-row">{
         value.map((value) => {
-          return(<span className=" border-2 border-black w-8 h-8 text-center text-black" style={{backgroundColor:`rgb(${value},${value},${value})`}}>{value.toFixed()}</span>)
+          return(<span key={Math.random()} className=" border-2 border-black w-8 h-8 text-center text-black" style={{backgroundColor:`rgb(${value},${value},${value})`}}>{value.toFixed()}</span>)
         })}
       </div>})
       }</div>
@@ -376,7 +381,7 @@ export default function Home() {
           <p>
             E se a gente aplicasse a convolução de um filtro em uma imagem?
           </p>
-          {imagemDesenhada(1,true,false)}
+          {imagemDesenhada(false, true)}
         </div>
         <div className="flex flex-col w-full justify-center items-center">
           <p>
@@ -385,7 +390,7 @@ export default function Home() {
           <div className="flex flex-row w-1/2 justify-between items-center ">
               
             <span className="flex flex-col relative justify-center items-center">
-              {imagemDesenhada(1,true,true)}
+              {imagemDesenhada(true,true)}
               <div className="flex flex-col absolute" style={{left:marginLeftMario,top:marginTopMario}}>
                 <div className="flex flex-row">
                   <span className="w-8 h-8 bg-white border-2 border-black text-black text-center opacity-75">1/9</span>
@@ -416,7 +421,7 @@ export default function Home() {
             </p>
           </div>
           <div className="flex">
-            <MathComponent tex={'Conv[x,y] = \\sum_{x=0}^{2} \\sum_{y=0}^{2}\\text{vet}[x,y] \\cdot \\text{filt}[x,y]'} />
+            <MathJaxComponent formula={'Conv[x,y] = \\sum_{x=0}^{2} \\sum_{y=0}^{2}\\text{vet}[x,y] \\cdot \\text{filt}[x,y]'} />
           </div>
         </div>
         <div className="flex flex-col w-full justify-center items-center">
@@ -433,6 +438,156 @@ export default function Home() {
             </div>
         </div>
       </section>
+      <section className="flex gap-4 flex-col mt-10">
+          <p className="indent-14">
+            Após compreendermos a base de convolução e vermos alguns kernels muito utilizados em CNNs, podemos nós aprofundar um pouco mais no assunto, agora te faço uma pergunta para pensar um pouco:
+          </p>
+          <p className="text-center bg-white text-black p-2 rounded-md">
+              Como reconheceremos uma imagem com que aprendemos?
+          </p>
+          <p className="indent-14">
+              O reconhecemento de imagem utilizando tecnicas de convolução. É feito da mesma forma como vimos no caso do mario, onde aplicamos um filtro em uma imagem,
+               e assim obtemos uma nova imagem, e com essa nova imagem podemos comparar ela com um outra imagem que já foi vista anteriormente,
+               através de combinação de matrizes onde verificamos o quão igual é a gerada com a que ja foi vista anteriormente e classificada.
+          </p>
+          <div className="flex flex-col justify-center items-center">
+            {imagemDesenhada(false, false)}
+
+          </div>
+          <p className="indent-14">
+              A imagem em preto e branco obviamente não ficarem 100% igual porem teria muitas similiariade com a vista do mario, estamos usando a imagem abaixo apenas como um exemplo. Se aplicarmos o mesmo filtro anteriormente teriamos um resultado muito parecido. E ao compararmos uma com a outra
+              nosso modelo provavelmente diria que é o mario. Principalmente se tivessemos um modelo baseado em bordas ou coisa do tipo. Porem ele estaria equivocado.
+          </p>
+          <div className="flex flex-row justify-center items-center">
+              
+              <span className="flex flex-col relative justify-center items-center">
+                {imagemDesenhada(true,true)}
+              </span>
+              <Image width={400} height={400} alt={"mario convolução pronta"} src={"/imgs/convolucao_pronta.png"}></Image>
+              <Image width={400} height={400} alt={"mario convolução pronta"} src={"/imgs/convolucao_pronta.png"}></Image>
+
+            </div>
+
+
+          <p className="indent-14">
+              Mas então porque não utilizamos apenas a convolução para identificação de image? Ainda é utilizado em casos mais simples, isso implicaria em treinar com todas imagens do mundo para obtermos todos os tipos de variações,
+              como no caso de um cachorro treinar com milhões de fotos de cada raça seria um processo extremamente caro e custoso. Portanto foi pensado e se pudessemos ensinar o computador a aprender a identificar imagens por si de 
+              uma forma mais natural sem ter que ensinar todas as variações possiveis de um cachorro (por exemplo), e se ensinassemos oque é um cachorro e fazermos ele aprender a identificar pontos chaves de um cachorro, 
+              assim surgiu as Redes Neurais Convolucionais.
+          </p>
+          <p className="text-center bg-white text-black">
+              Agora complicaremos mais um pouco!!!!
+          </p>
+          <p className="indent-14">
+              Temos um quebra cabeça já montado, e queremos que um computador consiga montar esse quebra cabeça, para isso precisamos ensinar o computador a montar o quebra cabeça,
+              ensinando tecnicas basicas como encaixar peças, encaixar peças de acordo com a cor, encaixar peças de acordo com o formato, e assim por diante, e para isso precisamos de um modelo que consiga
+              aprender essas tecnicas. Mas para conseguirmos ensinar o computador precisamos Inserir o quebra cabeça já montado e o quebra cabeça desmontado, mostrando para ele que podemos extrair informações das peças
+              separadamente como a cor, o formato, o desenho, a textura, e assim por diante, tudo isso através de filtros convolucionais que são aplicados nas peças assim ele conseguirá com o tempo montar o quebra cabeça perfeitamente.
+          </p>
+          <p className="indent-14">
+              Imagine como um cerebro se comporta, ele recebe informações de todos os sentidos, e essas informações vão disparando pequenos estimulos que foram aprendidos ao longo do tempo, e esses estimulos vão se conectando um a um,
+              até o momento onde nosso cerebro entende o que está acontecendo, oque ele está enxergando ou ouvindo, e assim por diante. Isso é uma Rede Neural (não é atoa que o nome do modelo computacional se chama Rede Neural também) onde 
+              cada neurônio é equivalente a um minusculo ponto de informação sobre algo que foi aprendido. Ou seja ao vermos uma imagem, nosso cerebro vai disparando neurônio por neurônio até ele juntar todos os neurônios e buscar no conjunto
+              de memorias que ele tem, e falar  {'"Po da ultima vez que todos esse neuronios foram ativados em conjunto isso era um cachorro, porém tem algo diferente, a cor parece estar meio cinza (cachorro velhinho), mas ainda sim tenho quase certeza, bom vou avisar "Isso é um cachorro!" "'}.
+              Com esse conhecimento podemos seguir para o proximo passo.
+          </p>
+          <p className="text-center bg-white text-black">
+              Com isso entendido podemos entrar no passo a passo para a criação de uma rede neural para reconhecimento de imagens utilizando convolução. Ou as famosas CNN's
+          </p>
+          <ul className="gap-6">
+            <li>
+              <p className="indent-14">
+                Passo 1: Pré-processamento da imagem - Nesta etapa, a imagem de entrada é normalmente redimensionada para um tamanho fixo e convertida para escala de cinza, se necessário. Isso ajuda a reduzir a complexidade computacional e a normalizar os dados.
+              </p>
+            </li>
+            <li>
+              <p className="indent-14">
+                Passo 2: Extração de características - Nesta etapa, são aplicados filtros convolucionais para extrair características importantes da imagem. Esses filtros podem detectar bordas, texturas e outros padrões relevantes para a tarefa de reconhecimento
+                (podem ser varias combinações de filtro).
+              </p>
+            </li>
+            <li className="flex flex-col justify-center items-center gap-2">
+            <p className="indent-14">
+                Passo 3: Pooling - Após a extração de características, é comum aplicar uma operação de pooling para reduzir a dimensionalidade dos dados. O pooling ajuda a preservar as características mais importantes, enquanto reduz o tamanho dos dados e torna o modelo mais eficiente,
+                é como se fosse uma média dos valores de uma região os mais conhecidos são o MaxPooling e o AveragePooling é como se ele picotasse a imagem em varios pedasso pegando apenas os pontos mais importantes segundo a tecnica escolhida (não necessariamente precisa ser apenas uma)
+                gerando assim um novo mapa de características intercalando.
+              </p>
+              <p className="text-center bg-white text-black">
+              Polling {'=>'} Mapa de Caracteristicas Gerado (Aplicado uma convolução para extrarir informações) {'=>'} Polling {'=>'} Mapa de Caracteristicas Gerado (Aplicado uma convolução para extrarir informações).
+              </p>
+              <Image width={500} height={200} src={"/imgs/camadas.webp"} alt="Camadas de Extração de Informação"></Image>
+            </li>
+            <li>
+            <p className="indent-14">
+                Passo 4: Classificação - Nesta etapa, as características extraídas são fornecidas a uma rede neural densa (fully connected) para realizar a classificação. A rede neural densa é responsável por aprender a relação entre as características e as classes de interesse.
+              </p>
+            </li>
+            <li>
+            <p className="indent-14">
+                Passo 5: Treinamento e ajuste do modelo - O modelo é treinado usando um conjunto de dados rotulados, onde as imagens são associadas às suas respectivas classes. Durante o treinamento, os pesos do modelo são ajustados para minimizar a diferença entre as previsões do modelo e os rótulos verdadeiros.
+              </p>
+            </li>
+            <li>
+            <p className="indent-14">
+                Passo 6: Avaliação do modelo - Após o treinamento, o modelo é avaliado usando um conjunto de dados de teste separado. Isso permite verificar a capacidade do modelo de generalizar para novos exemplos e medir sua precisão.
+              </p>
+            </li>
+          </ul>
+          <p className="text-center bg-white text-black">
+              Mas e como é feito o treinamento destes modelos de CNN's para reconhecimento de imagens?
+          </p>
+          <ul className="gap-6">
+            <li>
+              <p className="indent-14">
+                Passo 1: Inicialmente, os valores dos filtros são configurados aleatoriamente.
+              </p>
+            </li>
+            <li>
+              <p className="indent-14">
+                Passo 2: A imagem de entrada passa pela rede, camada por camada, realizando convoluções, pooling e ativações. A saída final é comparada com a verdade real (label) usando uma função de perda.
+              </p>
+            </li>
+            <li>
+              <p className="indent-14">
+                Passo 3: A função de perda (como cross-entropy para classificação) mede o quão longe a predição da rede está da verdade real.
+              </p>
+            </li>
+            <li>
+              <p className="indent-14">
+                Passo 4: O algoritmo de backpropagation calcula os gradientes da função de perda em relação aos pesos dos filtros. Esses gradientes indicam a direção na qual os pesos devem ser ajustados para reduzir a perda.
+              </p>
+            </li>
+            <li>
+              <p className="indent-14">
+                Passo 5: Usando um algoritmo de otimização (como gradiente descendente), os pesos dos filtros são atualizados. Isso ajusta os filtros de forma a melhorar o desempenho da rede na tarefa de reconhecimento.
+              </p>
+            </li>
+            <li>
+              <p className="indent-14">
+                Passo 6: O processo é repetido várias vezes (batchs) até que a rede atinja um desempenho satisfatório no conjunto de treinamento.
+              </p>
+            </li>
+          </ul>
+          <p className="indent-14">
+              Aqui neste projeto foco principalmente em assuntos relacionados a CNN's, mas é importante entender os conceitos de BackPropagation,Cross-Entropy, Algoritmos de Otimização, portanto recomendo a leitura de alguns livros e blogs sendo esses:
+              Obs: Só o Livro do Geron ja daria conta de muitas dessas explicações, porém os outros são mais uma leitura rapida.
+          </p>
+          <p className="indent-14">
+            <Link href="https://www.amazon.com/Hands-Machine-Learning-Scikit-Learn-TensorFlow/dp/1492032646">- Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow: Concepts, Tools, and Techniques to Build Intelligent Systems</Link>
+          </p>
+          <p className="indent-14">
+            <Link href="https://medium.com/@l228104/understanding-cross-entropy-loss-and-its-role-in-classification-problems-d2550f2caad5">- Understanding Cross-Entropy Loss and Its Role in Classification Problems</Link>
+          </p>
+          <p className="indent-14">
+            <Link href="https://medium.com/data-hackers/algoritmos-de-otimiza%C3%A7%C3%A3o-hill-climbing-e-simulated-annealing-3803061f66f0">- Algoritmos de otimização: Hill Climbing e Simulated Annealing</Link>
+          </p>
+          <p className="indent-14">
+            <Link href="https://medium.com/itau-data/redes-neurais-convolucionais-2206a089c715">- Redes neurais convolucionais</Link>
+          </p> 
+          <p className="indent-14">
+            <Link href="https://medium.com/@l228104/understanding-cross-entropy-loss-and-its-role-in-classification-problems-d2550f2caad5">- Understanding Cross-Entropy Loss and Its Role in Classification Problems</Link>
+          </p> 
+        </section>
     </main>
   );
 }

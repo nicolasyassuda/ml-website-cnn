@@ -1,5 +1,5 @@
 'use client'
-import { useState, useRef, ChangeEvent, useEffect } from 'react';
+import { useState, useRef, ChangeEvent, useEffect, useCallback } from 'react';
 import NextImage  from 'next/image';
 
 const Home = () => {
@@ -45,7 +45,7 @@ const Home = () => {
         }
     };
 
-    const applyLaplacianFilter = (image: HTMLImageElement) => {
+    const applyLaplacianFilter = useCallback((image: HTMLImageElement) => {
         const originalCanvas = originalCanvasRef.current;
         const resultCanvas = resultCanvasRef.current;
         if (!originalCanvas || !resultCanvas) return;
@@ -106,13 +106,13 @@ const Home = () => {
             }
         }
         resultContext.putImageData(resultData, 0, 0);
-    };
+    },[lambda]);
 
     useEffect(() => {
         if (uploadedImage) {
             applyLaplacianFilter(uploadedImage);
         }
-    }, [lambda, uploadedImage]);
+    }, [lambda, uploadedImage,applyLaplacianFilter]);
 
     return (
         <div className='p-4'>

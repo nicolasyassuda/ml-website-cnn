@@ -1,6 +1,6 @@
-'use client'
-import NextImage  from 'next/image';
-import { useState, useRef, ChangeEvent, useEffect } from 'react';
+'use client';
+import NextImage from 'next/image';
+import { useState, useRef, ChangeEvent, useEffect, useCallback } from 'react';
 
 const Home = () => {
     const [uploadedImage, setUploadedImage] = useState<HTMLImageElement | null>(null);
@@ -9,23 +9,8 @@ const Home = () => {
     const originalCanvasRef = useRef<HTMLCanvasElement | null>(null);
     const magnitudeCanvasRef = useRef<HTMLCanvasElement | null>(null);
     const gradientCanvasRef = useRef<HTMLCanvasElement | null>(null);
-    let sobelXKernelLatex = `G_x = \begin{bmatrix}
-    -1 & 0 & 1 \\
-    -2 & 0 & 2 \\
-    -1 & 0 & 1
-    \end{bmatrix}
-    `;
-    const sobelXKernel = [
-        -1, 0, 1,
-        -2, 0, 2,
-        -1, 0, 1
-    ];
 
-    const sobelYKernel = [
-        -1, -2, -1,
-        0, 0, 0,
-        1, 2, 1
-    ];
+
 
     const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -67,10 +52,23 @@ const Home = () => {
         }
     };
 
-    const applySobelFilter = (image: HTMLImageElement) => {
+    const applySobelFilter = useCallback((image: HTMLImageElement) => {
         const originalCanvas = originalCanvasRef.current;
         const magnitudeCanvas = magnitudeCanvasRef.current;
         const gradientCanvas = gradientCanvasRef.current;
+
+        const sobelXKernel = [
+            -1, 0, 1,
+            -2, 0, 2,
+            -1, 0, 1
+        ];
+    
+        const sobelYKernel = [
+            -1, -2, -1,
+            0, 0, 0,
+            1, 2, 1
+        ];
+
         if (!originalCanvas || !magnitudeCanvas || !gradientCanvas) return;
 
         const originalContext = originalCanvas.getContext('2d');
@@ -139,13 +137,13 @@ const Home = () => {
         }
         magnitudeContext.putImageData(sobelData, 0, 0);
         gradientContext.putImageData(gradientData, 0, 0);
-    };
+    }, [theta]);
 
     useEffect(() => {
         if (uploadedImage) {
             applySobelFilter(uploadedImage);
         }
-    }, [theta, uploadedImage]);
+    }, [theta, uploadedImage, applySobelFilter]);
 
     return (
         <div className='p-4'>
@@ -157,28 +155,25 @@ const Home = () => {
                     <canvas ref={originalCanvasRef} style={{ border: '1px solid black', marginTop: '10px' }} />
                 </div>
                 <div>
-                    <h1>Gradient Direction (Filtro de Sobel)</h1>       
+                    <h1>Gradient Sobel (Filtro de Sobel)</h1>       
                     <canvas ref={magnitudeCanvasRef} style={{ border: '1px solid black', marginTop: '10px' }} />
                 </div>
                 <div>
-                    <h1>Gradient Direction (Filtro de Sobel directional)</h1>               
-                    <label htmlFor="theta">Theta: {theta.toFixed(2)}</label>
-                    <input
-                        type="number"
-                        id="theta"
-                        min="0"
-                        max={2 * Math.PI}
-                        step="0.01"
-                        value={theta}
-                        onChange={handleThetaChange}
-                    />
+                    <h1>Gradient Direction (Filtro de Sobel directional)</h1> 
+                    <p>Theta: {theta}</p>       
+                    <div className='flex gap-3'>       
+                        <button onClick={()=> setTheta(1.57)} className='bg-gray-600 rounded-md'>90 graus (pi/2)</button>
+                        <button onClick={()=> setTheta(3.14)} className='bg-gray-600 rounded-md'>180 graus (pi)</button>
+                        <button onClick={()=> setTheta(4.71)} className='bg-gray-600 rounded-md'>270 graus (3pi/4)</button>
+                        <button onClick={()=> setTheta(6.28)} className='bg-gray-600 rounded-md'>360 graus (2pi)</button>
+                    </div>
                     <canvas ref={gradientCanvasRef} style={{ border: '1px solid black', marginTop: '10px' }} />
                 </div>
             </section>
             <div>
                 <p>O filtro de Sobel é um filtro muito utilizado para detecção de bordas onde você pode obter o formato do objeto de após aplicar-se o filtro, no exemplo
                     acima, a imagem original é a imagem sem o filtro, a imagem do meio é a imagem após aplicar o filtro de Sobel e a imagem da direita é a imagem após aplicar o filtro de Sobel com direção,
-                    onde a imagem com direção basicamente multiplicamos o "gradiente" aplicado por um theta e assim podemos rotaciona-lo. Se quiser se aprofundar mais nisso, recomendo a leitura de <a className=' bg-cyan-700' href="https://en.wikipedia.org/wiki/Sobel_operator">Sobel Operator</a>.
+                    onde a imagem com direção basicamente multiplicamos o &quot;gradiente&quot; aplicado por um theta e assim podemos rotaciona-lo. Se quiser se aprofundar mais nisso, recomendo a leitura de <a className=' bg-cyan-700' href="https://en.wikipedia.org/wiki/Sobel_operator">Sobel Operator</a>.
                 </p>
                 <p>Seu kernel é a combinação de um kernel vertical e um kernel horizontal via sua resultante</p>
                 
