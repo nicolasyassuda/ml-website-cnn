@@ -492,7 +492,7 @@ export default function Home() {
               Com esse conhecimento podemos seguir para o proximo passo.
           </p>
           <p className="text-center bg-white text-black">
-              Com isso entendido podemos entrar no passo a passo para a criação de uma rede neural para reconhecimento de imagens utilizando convolução. Ou as famosas CNN's
+              Com isso entendido podemos entrar no passo a passo para a criação de uma rede neural para reconhecimento de imagens utilizando convolução. Ou as famosas CNN&apos;s
           </p>
           <ul className="gap-6">
             <li>
@@ -534,7 +534,7 @@ export default function Home() {
             </li>
           </ul>
           <p className="text-center bg-white text-black">
-              Mas e como é feito o treinamento destes modelos de CNN's para reconhecimento de imagens?
+              Mas e como é feito o treinamento destes modelos de CNN&apos;s para reconhecimento de imagens?
           </p>
           <ul className="gap-6">
             <li>
@@ -569,7 +569,7 @@ export default function Home() {
             </li>
           </ul>
           <p className="indent-14">
-              Aqui neste projeto foco principalmente em assuntos relacionados a CNN's, mas é importante entender os conceitos de BackPropagation,Cross-Entropy, Algoritmos de Otimização, portanto recomendo a leitura de alguns livros e blogs sendo esses:
+              Aqui neste projeto foco principalmente em assuntos relacionados a CNN&apos;s, mas é importante entender os conceitos de BackPropagation,Cross-Entropy, Algoritmos de Otimização, portanto recomendo a leitura de alguns livros e blogs sendo esses:
               Obs: Só o Livro do Geron ja daria conta de muitas dessas explicações, porém os outros são mais uma leitura rapida.
           </p>
           <p className="indent-14">
