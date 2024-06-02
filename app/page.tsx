@@ -338,8 +338,8 @@ export default function Home() {
             </div>
           </div>
           <div className="flex flex-row w-24 justify-between">
-            <span className="min-h-fit hover:cursor-pointer" style={{ transform: "rotate(180deg)" }} onClick={() => handlerOnClick(-1)}>{'=>'}</span>
-            <span className=" min-h-fit hover:cursor-pointer" onClick={() => handlerOnClick(1)}>{'=>'}</span>
+            <span className="min-h-fit hover:cursor-pointer text-white" style={{ transform: "rotate(180deg)" }} onClick={() => handlerOnClick(-1)}>{'=>'}</span>
+            <span className=" min-h-fit hover:cursor-pointer text-white" onClick={() => handlerOnClick(1)}>{'=>'}</span>
           </div>
           <p>{'='}</p>
           <div className="flex flex-row text-black text-center">
@@ -409,8 +409,8 @@ export default function Home() {
                 </div>
               </div>
               <div className="flex flex-row w-24 justify-between">
-                <span className="min-h-fit hover:cursor-pointer" style={{ transform: "rotate(180deg)" }} onClick={() => handlerOnClickSlideMario(-1)}>{'=>'}</span>
-                <span className=" min-h-fit hover:cursor-pointer" onClick={() => handlerOnClickSlideMario(1)}>{'=>'}</span>
+                <span className="min-h-fit hover:cursor-pointer text-white" style={{ transform: "rotate(180deg)" }} onClick={() => handlerOnClickSlideMario(-1)}>{'=>'}</span>
+                <span className=" min-h-fit hover:cursor-pointer text-white" onClick={() => handlerOnClickSlideMario(1)}>{'=>'}</span>
               </div>
             </span>
             {renderMarioConvolution()}
