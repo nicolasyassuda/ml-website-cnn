@@ -457,7 +457,7 @@ export default function Home() {
 
           </div>
           <p className="indent-14">
-              A imagem em preto e branco obviamente não ficarem 100% igual porem teria muitas similiariade com a vista do mario, estamos usando a imagem abaixo apenas como um exemplo. Se aplicarmos o mesmo filtro anteriormente teriamos um resultado muito parecido. E ao compararmos uma com a outra
+              A imagem em preto e branco obviamente não ficou 100% igual, porém teria muitas similiariades com a imagem vista do mario (estamos usando a imagem abaixo apenas como um exemplo). Se aplicarmos o mesmo filtro anteriormente teriamos um resultado muito parecido. E ao compararmos uma com a outra
               nosso modelo provavelmente diria que é o mario. Principalmente se tivessemos um modelo baseado em bordas ou coisa do tipo. Porem ele estaria equivocado.
           </p>
           <div className="flex flex-row justify-center items-center">
