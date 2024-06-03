@@ -698,7 +698,7 @@ export default function Home() {
             </li>
             <li>
               <p className="indent-14">
-              Passo 6: O processo é repetido várias vezes (batches) até que a rede atinja um desempenho satisfatório no conjunto de treinamento."
+              Passo 6: O processo é repetido várias vezes (batches) até que a rede atinja um desempenho satisfatório no conjunto de treinamento.
               </p>
             </li>
           </ul>
