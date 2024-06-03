@@ -488,7 +488,7 @@ export default function Home() {
           </p>
           <p className = "indent-14">Mas como o comuptador faz tudo isso? Como ele identifica e junta as peças até formar o quebra-cabeça completo?</p>
           <p className="indent-14">
-          PAra responder essas perguntas vamos entender como um cérebro se comporta. O cérebro recebe informações de todos os sentidos, e essas informações disparam pequenos estímulos aprendidos ao longo do tempo. 
+          Para responder essas perguntas vamos entender como um cérebro se comporta. O cérebro recebe informações de todos os sentidos, e essas informações disparam pequenos estímulos aprendidos ao longo do tempo. 
           Esses estímulos se conectam até que nosso cérebro entende o que está acontecendo, o que está enxergando ou ouvindo. Isso é uma Rede Neural Natural (não é à toa que o modelo computacional se chama Rede Neural também), 
           onde cada neurônio é equivalente a um ponto minúsculo de informação aprendida. Ao vermos uma imagem, nosso cérebro dispara neurônio por neurônio até juntar todos o seus sinais e busca no conjunto de memórias o que aquele conjunto específico de sinais siginifica.
           concluindo:   {'"Da última vez que todos esses neurônios foram ativados em conjunto, isso era um cachorro, porém há algo diferente; a cor está meio cinza (cachorro idoso), mas ainda assim, tenho quase certeza. Vou dizer: Isso é um cachorro! "'}.
