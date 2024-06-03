@@ -445,12 +445,12 @@ export default function Home() {
             Após compreendermos a base de convolução e vermos alguns kernels muito utilizados em CNNs, podemos nós aprofundar um pouco mais no assunto, agora te faço uma pergunta para pensar um pouco:
           </p>
           <p className="text-center bg-white text-black p-2 rounded-md">
-              Como reconheceremos uma imagem com que aprendemos?
+              Como reconheceremos uma imagem com o que aprendemos?
           </p>
           <p className="indent-14">
-              O reconhecemento de imagem utilizando tecnicas de convolução. É feito da mesma forma como vimos no caso do mario, onde aplicamos um filtro em uma imagem,
-               e assim obtemos uma nova imagem, e com essa nova imagem podemos comparar ela com um outra imagem que já foi vista anteriormente,
-               através de combinação de matrizes onde verificamos o quão igual é a gerada com a que ja foi vista anteriormente e classificada.
+              O reconhecemento de imagem utilizando tecnicas de convolução é feito da mesma forma como vimos no caso do mario, onde aplicamos um filtro em uma imagem,
+               e assim obtemos uma nova imagem. Com essa nova imagem podemos comparar ela com um outra imagem que já foi vista anteriormente,
+               através de combinação de matrizes onde verificamos o quão igual é a gerada com a que já foi vista anteriormente e classificada.
           </p>
           <div className="flex flex-col justify-center items-center">
             {imagemDesenhada(false, false)}
