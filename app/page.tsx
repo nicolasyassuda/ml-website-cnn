@@ -308,7 +308,9 @@ export default function Home() {
           </div>
         </div>
 
-        <p className="indent-14"> Quando falamos que há a convolução de 2 vetores é só imaginarmos esses 2 vetores deslizando um abaixo de outro os valores que tiverem correspondetes serão multiplicados:</p>
+        <p className="indent-14">Agora sabemos que é possível passar funções dentro de vetores. Agroa vamos tentar imaginar que essa função de transformação trata-se de outro vetor. A dinâmica se altera levemente, mas continua usando processor matemáticos básicos.
+         Quando falamos que há a convolução de 2 vetores, estamos fazendo uma opreação matemática entre dois vetores que irá resultar em um terceiro vetor.
+        É só imaginarmos esses 2 vetores deslizando um abaixo do outro. Os valores que tiverem correspondentes serão multiplicados e somados entre si para resultar no valor do vetor resultante.:</p>
         <div className="flex flex-col w-full justify-center items-center">
           <div className="flex flex-row">
             <div className="h-6 w-16 bg-white text-black text-center border-gray-400 border-r-2">
