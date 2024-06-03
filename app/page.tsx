@@ -486,11 +486,14 @@ export default function Home() {
           Para isso, inserimos o quebra-cabeça já montado e o desmontado, mostrando que podemos extrair informações das peças separadamente, como cor, formato, desenho e textura. 
           Tudo isso é feito através de filtros convolucionais que são aplicados nas peças, permitindo que o computador aprenda a montar o quebra-cabeça perfeitamente.
           </p>
+          <p className = "indent-14">Mas como o comuptador faz tudo isso? Como ele identifica e junta as peças até formar o quebra-cabeça completo?</p>
           <p className="indent-14">
-          Imagine como um cérebro se comporta: ele recebe informações de todos os sentidos, e essas informações disparam pequenos estímulos aprendidos ao longo do tempo. 
-          Esses estímulos se conectam até que nosso cérebro entende o que está acontecendo, o que está enxergando ou ouvindo. Isso é uma Rede Neural (não é à toa que o modelo computacional se chama Rede Neural também), 
-          onde cada neurônio é equivalente a um ponto minúsculo de informação aprendida. Ao vermos uma imagem, nosso cérebro dispara neurônio por neurônio até juntar todos e buscar no conjunto de memórias, concluindo:   {'"Da última vez que todos esses neurônios foram ativados em conjunto, isso era um cachorro, porém há algo diferente; a cor está meio cinza (cachorro idoso), mas ainda assim, tenho quase certeza. Vou dizer: Isso é um cachorro! "'}.
-              Com esse conhecimento podemos seguir para o proximo passo.
+          PAra responder essas perguntas vamos entender como um cérebro se comporta. O cérebro recebe informações de todos os sentidos, e essas informações disparam pequenos estímulos aprendidos ao longo do tempo. 
+          Esses estímulos se conectam até que nosso cérebro entende o que está acontecendo, o que está enxergando ou ouvindo. Isso é uma Rede Neural Natural (não é à toa que o modelo computacional se chama Rede Neural também), 
+          onde cada neurônio é equivalente a um ponto minúsculo de informação aprendida. Ao vermos uma imagem, nosso cérebro dispara neurônio por neurônio até juntar todos o seus sinais e busca no conjunto de memórias o que aquele conjunto específico de sinais siginifica.
+          concluindo:   {'"Da última vez que todos esses neurônios foram ativados em conjunto, isso era um cachorro, porém há algo diferente; a cor está meio cinza (cachorro idoso), mas ainda assim, tenho quase certeza. Vou dizer: Isso é um cachorro! "'}.
+          A rede neural artificial funciona com o mesmo princípio de armazenamento de informações e checagem de sinais específicos.
+          Com esse conhecimento podemos seguir para o proximo passo.
           </p>
           <p className="text-center bg-white text-black">
               Com isso entendido podemos entrar no passo a passo para a criação de uma rede neural para reconhecimento de imagens utilizando convolução. Ou as famosas CNN&apos;s
