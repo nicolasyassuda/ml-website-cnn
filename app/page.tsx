@@ -26,6 +26,32 @@ export default function Home() {
 
   const [newImageMarioConvolution,setNewImageMarioConvolution] = useState<Array<number[]>>([[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]])
   const [indexImageMarioConvolution,setIndexImageMarioConvolution] = useState<number>(0)
+
+  const [marginLeftPolling,setMarginLeftPolling] = useState<number>(0)
+  const [marginTopPolling, setMarginTopPolling] = useState<number>(0)
+
+  const [newImageMarioPolling1,setNewImageMarioPolling1] = useState<Array<number[]>>([[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]])
+
+  const [indexImageMarioPolling,setIndexImageMarioPolling] = useState<number>(0)
+
+  let marioConvolution: Array<number[]> = [
+    [255,233,188,143,121,121,121,121,143,166,188,210],
+    [255,214,150,86,77,90,103,81,103,131,182,210],
+    [236,189,128,100,113,139,152,107,107,113,164,198],
+    [217,186,129,123,136,175,201,156,134,140,191,225],
+    [198,167,123,149,162,188,201,156,112,89,112,168],
+    [217,192,161,168,175,188,201,179,134,112,118,174],
+    [236,195,160,150,157,157,152,130,130,130,158,192],
+    [233,188,137,118,112,112,108,108,130,148,198,227],
+    [188,121,76,68,72,77,72,68,85,99,143,188],
+    [176,109,75,88,97,102,102,97,88,75,109,176],
+    [186,136,112,109,106,111,111,106,109,112,136,186],
+    [219,173,138,118,111,111,111,111,118,138,173,219],
+    [231,189,148,107,113,131,131,113,107,148,189,231],
+    [224,169,121,110,147,184,184,147,110,121,169,224],
+    [198,142,105,126,181,237,237,181,126,105,142,198],
+    [198,160,141,179,217,255,255,217,179,141,160,198]];
+
   let marioImage : Array<string[]> = [
     ['w','w','w','w','w','w','w','w','w','w','w','w','w','w'],
     ['w','w','w','w','r','r','r','r','r','r','w','w','w','w'],
@@ -106,6 +132,46 @@ export default function Home() {
     }
 
 
+  }
+  function calculateMaxPolling(x:number,y:number){
+    let max = 0;
+    max = Math.max(marioConvolution[y][x],marioConvolution[y][x+1],marioConvolution[y+1][x],marioConvolution[y+1][x+1])
+    return max;
+  }
+  function handlerOnClickSlideMarioPolling(avanco: number){
+    console.log(marginLeftPolling,marginTopPolling)
+    let newImagePollingAuxiliar = [...newImageMarioPolling1]
+
+    if((marginTopPolling == 0 && avanco == -1 && marginLeftPolling == 0) || (marginTopPolling == 448 && avanco == 1 && marginLeftPolling == 320)) {
+      return;
+    };
+
+    let resultOfPolling = calculateMaxPolling(marginLeftPolling/32,marginTopPolling/32)
+    if(avanco==1){
+      newImagePollingAuxiliar[indexImageMarioPolling].push(resultOfPolling)
+      setNewImageMarioPolling1(newImagePollingAuxiliar)
+    }else{
+
+      newImagePollingAuxiliar[indexImageMarioPolling].pop()
+      setNewImageMarioPolling1(newImagePollingAuxiliar)
+
+    }
+
+    if (marginLeftPolling <= 0 && avanco == -1){
+      setMarginLeftPolling(320)
+      setMarginTopPolling(marginTopPolling + avanco * 64)
+      setIndexImageMarioPolling(indexImageMarioPolling - 1)
+      return;
+    }
+    else if (marginLeftPolling >= 320 && avanco == 1) {
+      setMarginLeftPolling(0)
+      setMarginTopPolling(marginTopPolling + avanco * 64)
+      setIndexImageMarioPolling(indexImageMarioPolling + 1)
+      return;
+    }else{
+      setMarginLeftPolling(marginLeftPolling + avanco * 64)
+      return;
+    }
   }
   function imagemSimples(alinhada:boolean = false){
     let imagemMontada = [[0,1,0],[1,1,1],[0,1,0]];
@@ -190,6 +256,15 @@ export default function Home() {
   }
   function renderMarioConvolution(){
     return <div className="flex flex-col ml-8">{newImageMarioConvolution.map((value) => {
+      return <div key={Math.random()} className="flex flex-row">{
+        value.map((value) => {
+          return(<span key={Math.random()} className=" border-2 border-black w-8 h-8 text-center text-black" style={{backgroundColor:`rgb(${value},${value},${value})`}}>{value.toFixed()}</span>)
+        })}
+      </div>})
+      }</div>
+  }
+  function renderMarioConvolutionList(list:Array<number[]>){
+    return <div className="flex flex-col">{list.map((value) => {
       return <div key={Math.random()} className="flex flex-row">{
         value.map((value) => {
           return(<span key={Math.random()} className=" border-2 border-black w-8 h-8 text-center text-black" style={{backgroundColor:`rgb(${value},${value},${value})`}}>{value.toFixed()}</span>)
@@ -490,7 +565,7 @@ export default function Home() {
           Para isso, inserimos o quebra-cabeça já montado e o desmontado, mostrando que podemos extrair informações das peças separadamente, como cor, formato, desenho e textura. 
           Tudo isso é feito através de filtros convolucionais que são aplicados nas peças, permitindo que o computador aprenda a montar o quebra-cabeça perfeitamente.
           </p>
-          <p className = "indent-14">Mas como o comuptador faz tudo isso? Como ele identifica e junta as peças até formar o quebra-cabeça completo?</p>
+          <p className = "indent-14">Mas como o computador faz tudo isso? Como ele identifica e junta as peças até formar o quebra-cabeça completo?</p>
           <p className="indent-14">
           Para responder essas perguntas vamos entender como um cérebro se comporta. O cérebro recebe informações de todos os sentidos, e essas informações disparam pequenos estímulos aprendidos ao longo do tempo. 
           Esses estímulos se conectam até que nosso cérebro entenda o que está acontecendo, o que está enxergando ou ouvindo. Isso é uma Rede Neural Natural (não é à toa que o modelo computacional se chama Rede Neural também), 
@@ -498,6 +573,56 @@ export default function Home() {
           concluindo:   {'"Da última vez que todos esses neurônios foram ativados em conjunto, isso era um cachorro, porém há algo diferente; a cor está meio cinza (cachorro idoso), mas ainda assim, tenho quase certeza. Vou dizer: Isso é um cachorro! "'}.
           A rede neural artificial funciona com o mesmo princípio de armazenamento de informações e checagem de sinais específicos.
           Com esse conhecimento podemos seguir para o proximo passo.
+          </p>
+          <p className="text-center bg-white text-black">
+              Como o processo de extração de dados é feito pela rede neural (em CNNs)?
+          </p>
+          <p className="indent-14">
+            O processo de extração de dados é feito através de camadas de convolução e pooling repeditidas vezes para podermos assim extrair o maximo de informações importantes possiveis,
+            existentes dois tipos de pooling principais AVG Polling, Max Polling , que serve para simplificar a informação vinda da camada de convolução para uma unidade escolhida (no caso demonstrado 2x2) onde ele diminuirá a informação para 1/4 do tamanho original.
+            Mas ainda mantendo os valores maximos ou medianos da região, podendo assim nós trazer informações importantes da camada anterior diminuindo a quantidade de pesos a serem aprendidos e evitando tambem o overfitting já que o algoritmo não aprenderá a entrada como um todo.
+          </p>
+          
+          <div className="flex relative flex-row w-fit justify-center items-center">
+            <div className="flex relative flex-col w-full">
+              {renderMarioConvolutionList(marioConvolution)}
+              <div className="flex flex-col absolute" style={{marginLeft:marginLeftPolling, marginTop:marginTopPolling}}>
+                  <div className="flex flex-row">
+                    <span className="w-16 h-16 bg-white border-2 border-black text-black text-center opacity-75">MAX max(x)</span>
+                  </div>
+                </div>
+
+              <div>
+              <div className="flex flex-row w-full justify-between ">
+                  <span className="min-h-fit hover:cursor-pointer text-white" style={{ transform: "rotate(180deg)" }} onClick={() => handlerOnClickSlideMarioPolling(-1)}>{'=>'}</span>
+                  <span className=" min-h-fit hover:cursor-pointer text-white" onClick={() => handlerOnClickSlideMarioPolling(1)}>{'=>'}</span>
+              </div>
+              </div>
+            </div>
+            <div className="ml-8">
+              {renderMarioConvolutionList(newImageMarioPolling1)}
+            </div>
+          </div>
+          <p className="indent-14">
+              Este processo é repetido diversas vezes conforme o necessario, onde cada algoritmo tem suas peculiaridades alguns escolhem intercalar as camadas até que a camada de polling minima, então tudo depende do objetivo do modelo,arquitetura ou qual a profundidade de rede que estamos trabalhando.
+          </p>
+          <p className="text-center bg-white text-black">
+              Ta mas e as camadas de convolução escolhemos qualquer uma e vamos testando??
+          </p>
+          <p className="indent-14">
+            Graças a Rede Neural não, o proposito de se ter uma rede neural é justamente esse onde nunca saberemos qual o melhor filtro para detectar certas peculiaridades em um conjunto de imagens (obvio que estamos tratando de problemas mais complexos aqui),
+            portanto é isso que fazemos quando treinamos uma rede neural, ela aprende a melhor forma de detectar certas características em um conjunto de imagens, e isso é feito através de um processo chamado de backpropagation, onde a rede neural aprende a melhor 
+            forma de detectar certas características em um conjunto de imagens, chutando diversos filtros (inclusive um diferente em cada camada) onde segundo ao resultado do modelo no conjunto de testes mudamos os pesos de cada uma das features, podendo elas ser 
+            os proprios filtros (forma como lidamos com as bordas e cortes), camadas de polling (tamanho e como se comportam), funções de ativação para atribuição de atributos não linares permitindo a captura de elemento mais complexos entre outros.
+          </p>
+          <p className="text-center bg-white text-black">
+              Como isso se liga a ideia de neurônios e redes neurais?
+          </p>
+          <p className="indent-14">
+            Após o todo o processo de extração de informações, características existe uma camada chamada de camada densa (fully connected) onde é feito a classificação da imagem, onde a rede neural aprendeu a relação entre as características e as classes de interesse,
+            evaluando, assim como cada camada polling interage com a entrada inicial assim aprendendo as peculiaridades de cada um das imagens para reconhecimento, assim mesmo que mudassemos a entrada isso não alteraria muita coisa pois a camada densa já teria aprendido
+            as peculiaridades de cada objeto, forma, animal entre outras coisas onde pequenas mudanças não causariam grandes impactos, assim como nós aprendemos a reconhecer um cachorro mesmo que ele esteja deitado, de lado, de costas, de frente, com a boca aberta, fechada,
+            nos aprendemos um conjunto de informações sobre o mesmo e gravamos isso é um cachorro.
           </p>
           <p className="text-center bg-white text-black">
               Com isso entendido podemos entrar no passo a passo para a criação de uma rede neural para reconhecimento de imagens utilizando convolução. Ou as famosas CNN&apos;s
@@ -596,6 +721,9 @@ export default function Home() {
           <p className="indent-14">
             <Link href="https://medium.com/@l228104/understanding-cross-entropy-loss-and-its-role-in-classification-problems-d2550f2caad5">- Understanding Cross-Entropy Loss and Its Role in Classification Problems</Link>
           </p> 
+          <p className="indent-14">
+              <Link href="https://medium.com/neuronio-br/entendendo-redes-convolucionais-cnns-d10359f21184">- Entendendo Redes Convolucionais (CNNs)</Link>
+          </p>
         </section>
     </main>
   );
