@@ -251,7 +251,7 @@ export default function Home() {
       <section className="flex gap-4 flex-col">
         <h1 className=" font-bold text-xl">Convolução</h1>
         <p className="indent-14 leading-relaxed">
-          Um pouco de teoria para podermos nós contextualizar mas prometo que depois ficará tudo mais claro e simples de ser entendido.
+          Um pouco de teoria para podermos nos contextualizar, mas prometo que depois ficará tudo mais claro e simples de ser entendido.
           Primeiro imagine 2 funções f(x) e g(x), a convolução entre essas duas funções é dada por:
         </p>
         <p className=" text-center">
